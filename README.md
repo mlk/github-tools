@@ -7,6 +7,11 @@ Update Permissions
 ------------------
 Gives a team the specified permission to every repository in an organisation. 
 
+Requires:
+
+* [hub](https://hub.github.com)
+* [jq](https://stedolan.github.io/jq/)
+
 ```
 Gives the team permission to every GitHub repository.
 Example: ./update-permissions.sh -o myorg -t "Team Leads"

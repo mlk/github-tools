@@ -2,7 +2,7 @@
 
 function show_help {
   echo $0
-  echo "Gives the team permission to every GitHub repository."
+  echo "Gives the team permission to every GitHub repository in an organisation."
   echo "Example: $0 -o myorg -t \"Team Leads\""
   echo " " 
   echo "-h Show help"
