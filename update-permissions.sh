@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "${SCRIPT}/common.sh"
+
 function show_help {
   echo $0
   echo "Gives the team permission to every GitHub repository in an organisation."
@@ -32,39 +35,15 @@ shift $((OPTIND-1))
 
 [ "${1:-}" = "--" ] && shift
 
+has_value "${ORG_NAME}" "Org name is reqired."
+has_value "${TEAM_NAME}" "Team name is reqired."
 
-if [[ -z "${ORG_NAME}" ]]; then
-   echo "Org name is reqired."
-   show_help
-   exit 1
-fi
+has_command hub "https://hub.github.com"
+has_command jq "https://stedolan.github.io/jq/"
 
-if [[ -z "${TEAM_NAME}" ]]; then
-   echo "Team name is reqired."
-   show_help
-   exit 1
-fi
+TEAM_ID=$(getTeam "${ORG_NAME}" "${TEAM_NAME}")
 
-if ! which hub > /dev/null 2>&1; then
-   echo "Hub is required'. https://hub.github.com"
-   show_help
-   exit 1
-fi
-
-if ! which jq > /dev/null 2>&1; then
-   echo "JQ is required'. https://stedolan.github.io/jq/"
-   show_help
-   exit 1
-fi
-
-
-TEAM_ID=$(hub api /orgs/${ORG_NAME}/teams | jq ".[] | select(.name==\"${TEAM_NAME}\") | .id")
-
-if [[ -z "${TEAM_ID}" ]]; then
-   echo "No team found with that name."
-   show_help
-   exit 1
-fi
+has_value "${TEAM_ID}" "No team found with that name."
 
 PAGE=1
 
