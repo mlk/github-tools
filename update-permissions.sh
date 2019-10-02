@@ -51,8 +51,14 @@ while : ; do
     DATA=$(hub api --flat orgs/${ORG_NAME}/repos\?page=$PAGE  | grep '\]\.name' | cut -f 2)
     array=($DATA)
     for I in "${array[@]}"; do
-      echo "> $I"
-      echo hub api -X PUT -f permission=$PERMISSION /teams/${TEAM_ID}/repos/${ORG_NAME}/$I
+      echo -n "> $I"
+      RESULT=$(hub api -X PUT -f permission=$PERMISSION /teams/${TEAM_ID}/repos/${ORG_NAME}/$I)
+      if [ $? != 0 ]; then
+        echo -n " ❌ "
+        echo $RESULT | jq -r '.message'
+      else
+        echo " ✅"
+      fi
     done
    
     [[ ! -z "$DATA" ]] || break
