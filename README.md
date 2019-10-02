@@ -22,3 +22,16 @@ Example: ./update-permissions.sh -o myorg -t "Team Leads"
 -p [read|write|admin] The permission to give to the team; defaults to admin
 ```
 
+My PRs
+------
+Shows the current users awaiting PRs.
+
+Requires:
+
+* [hub](https://hub.github.com)
+* [jq](https://stedolan.github.io/jq/)
+* [csvkit](https://github.com/wireservice/csvkit)
+
+```
+Example: ./my-prs.sh
+```
