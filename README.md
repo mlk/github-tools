@@ -38,4 +38,5 @@ Shows all PRs currently assigned to you.
 Example: ./my-prs.sh
  
 -h Show help
+-a Shows authored PRs instead of PRs awaiting review
 ```
