@@ -9,14 +9,20 @@ function show_help {
   echo "Example: $0"
   echo " "
   echo "-h Show help"
+  echo "-a Shows authored PRs instead of PRs awaiting review"
 }
 
-while getopts "h?" opt; do
+ACTION="review-requested"
+
+while getopts "h?a" opt; do
     case "$opt" in
     h|\?)
         show_help
         exit 0
         ;;
+    a)
+      ACTION="author"
+ 	;;
     esac
 done
 
@@ -30,9 +36,9 @@ has_command in2csv "https://github.com/wireservice/csvkit"
 
 USER=$(who_am_i)
 
-DATA=$(hub  api "search/issues?q=is:open%20is:pr%20review-requested:${USER}%20archived:false" | jq -r '.items[] | [{"Title": .title, "URL": .html_url}]')
+DATA=$(hub api "search/issues?q=is:open%20is:pr%20${ACTION}:${USER}%20archived:false" | jq -r '[ .items[] | {"Title": .title, "URL": .html_url}]')
 
-if [ -z "$DATA" ]; then
+if [ "$DATA" == "[]" ]; then
   echo "No PRs 🎉"
 else
   echo $DATA | in2csv -f json | csvlook
