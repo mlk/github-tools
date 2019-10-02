@@ -22,6 +22,22 @@ Example: ./update-permissions.sh -o myorg -t "Team Leads"
 -p [read|write|admin] The permission to give to the team; defaults to admin
 ```
 
+Unprotected
+-----------
+
+Returns all the repositories in an organisation where the given branch is unprotected.
+
+```
+./unprotected.sh
+Returns all the repositories in an organisation where the given branch is unprotected.
+Example: ./unprotected.sh -o myorg 
+ 
+-h Show help
+-o <org name>         The organisation to update; required
+-b <branch name>      The branch to check; defaults to master
+
+```
+
 My PRs
 ------
 Shows the current users awaiting PRs.

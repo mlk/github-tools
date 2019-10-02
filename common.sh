@@ -24,3 +24,21 @@ function has_value() {
   fi
 }
 
+
+function for_each_repo() {
+  ORG_NAME=$1
+
+  PAGE=1
+
+  while : ; do
+    DATA=$(hub api orgs/${ORG_NAME}/repos\?page=$PAGE  | jq -r '.[] | select( .disabled == false) | .name')
+    array=($DATA)
+    for I in "${array[@]}"; do
+      repo_action $I
+    done
+
+    [[ ! -z "$DATA" ]] || break
+    let PAGE=PAGE+1
+  done
+}
+

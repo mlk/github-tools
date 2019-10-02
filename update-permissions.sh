@@ -45,24 +45,18 @@ TEAM_ID=$(getTeam "${ORG_NAME}" "${TEAM_NAME}")
 
 has_value "${TEAM_ID}" "No team found with that name."
 
-PAGE=1
 
-while : ; do
-    DATA=$(hub api --flat orgs/${ORG_NAME}/repos\?page=$PAGE  | grep '\]\.name' | cut -f 2)
-    array=($DATA)
-    for I in "${array[@]}"; do
-      echo -n "> $I"
-      RESULT=$(hub api -X PUT -f permission=$PERMISSION /teams/${TEAM_ID}/repos/${ORG_NAME}/$I)
-      if [ $? != 0 ]; then
-        echo -n " ❌ "
-        echo $RESULT | jq -r '.message'
-      else
-        echo " ✅"
-      fi
-    done
-   
-    [[ ! -z "$DATA" ]] || break
-    let PAGE=PAGE+1
-done
+function repo_action() {
+  I=$1
+  echo -n "> $I"
+  RESULT=$(hub api -X PUT -f permission=$PERMISSION /teams/${TEAM_ID}/repos/${ORG_NAME}/$I)
+  if [ $? != 0 ]; then
+    echo -n " ❌ "
+    echo $RESULT | jq -r '.message'
+  else
+    echo " ✅"
+  fi
+}
 
+for_each_repo "${ORG_NAME}"
 
