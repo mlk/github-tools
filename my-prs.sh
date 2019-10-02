@@ -6,6 +6,9 @@ source "${SCRIPT}/common.sh"
 function show_help {
   echo $0
   echo "Shows all PRs currently assigned to you."
+  echo "Example: $0"
+  echo " "
+  echo "-h Show help"
 }
 
 while getopts "h?" opt; do

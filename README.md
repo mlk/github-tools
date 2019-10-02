@@ -33,5 +33,9 @@ Requires:
 * [csvkit](https://github.com/wireservice/csvkit)
 
 ```
+./my-prs.sh
+Shows all PRs currently assigned to you.
 Example: ./my-prs.sh
+ 
+-h Show help
 ```
